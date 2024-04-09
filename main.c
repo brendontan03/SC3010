@@ -143,6 +143,57 @@ struct BlockChain generateBlockChain(int size){
     return blockChain;
 }
 
+int fix(){
+    printf("--------------------------------------\n");
+    printf("Integer overflow Fix\n");
+    printf("--------------------------------------\n");
+    int64_t COIN = 100000000; // Smallest unit of currency, 1 BTC = 100 million satoshis
+    int64_t MAX_MONEY = 21000000 * COIN; // Max number of bitcoins is 21 million 
+    int64_t x1 = INT64_MAX;
+    int64_t x2 = INT64_MAX; 
+    int64_t arr[] = {x1, x2}; // array of transactions
+    int64_t wallet1 = 0;
+    int64_t wallet2 = 0;
+    int64_t UTXO = 50;
+    int64_t final_value = UTXO - (x1 + x2);
+    int length = sizeof(arr) / sizeof(arr[0]); // Number of transactions
+    int64_t nValueOut = 0;
+    for (int i = 0; i < length; i++){
+        if (arr[i] < 0){
+            printf("Error, transaction output negative\n");
+            printf("--------------------------------------\n");
+            return 0;
+        }
+        if (arr[i] > MAX_MONEY){
+            printf("Error, transaction %d output too high\n", i+1);
+            printf("Transaction %d value: %"PRId64"\n", i+1, arr[i]);
+            printf("Maximum transaction value : %"PRId64"\n", MAX_MONEY);
+            printf("--------------------------------------\n");
+            return 0;
+        }
+        nValueOut += arr[i];
+        if (nValueOut > MAX_MONEY){
+            printf("Final total transaction output too high\n");
+            printf("Total transaction value: %"PRId64"\n", nValueOut);
+            printf("Maximum transaction value : %"PRId64"\n", MAX_MONEY);
+            printf("--------------------------------------\n");
+            return 0;
+        }
+    }
+    
+    // Successfully passed the checks, transactions can be completed
+    printf("Transactions approved\n");
+    printf("--------------------------------------\n");
+    printf("bitcoin allocated to wallet 1: %"PRId64"\n", x1);
+    printf("bitcoin allocated to wallet 2: %"PRId64"\n", x2);
+    printf("bitcoin originally in UTXO: %"PRId64"\n", UTXO);
+    printf("bitcoin in UTXO: %"PRId64"\n", final_value);
+    printf("--------------------------------------\n");
+    wallet1 = wallet1 + x1;
+    wallet2 = wallet2 + x2;
+    return 0;
+}
+
 int main() {
     int user_input;
     
@@ -158,9 +209,10 @@ int main() {
         else if (user_input == 2)
         {
             printf("Fix demo\n");
-            generateBlockChain(53);
-            generateBlockChain(10000);
-            generateBlockChain(100000);
+            fix();
+            // generateBlockChain(53);
+            // generateBlockChain(10000);
+            // generateBlockChain(100000);
             //generateBlockChain(838319); //current bitcoin blockchain size
         }
         else if (user_input == 3)
