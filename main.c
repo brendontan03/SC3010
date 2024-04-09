@@ -71,7 +71,7 @@ char* randomHexInt()
         for (int j = 0; j < len; j++) { 
             final_hex[j] = hexChar[rand() % 16];
         } 
-        printf("%c", final_hex[i]);
+        //printf("%c", final_hex[i]);
     } 
     final_hex[24] = '\0';
     
@@ -96,10 +96,12 @@ void generateWallet(){
     printf("Wallet 3: %"PRId64".%"PRId64"\n", wallet3.Coin, wallet3.Cent);
 }
 
-struct BlockChain generateBlockChain(){
+struct BlockChain generateBlockChain(int size){
+    clock_t startTime = clock();
+    int msec = 0;
     struct BlockChain blockChain;
     struct Block block1;
-    blockChain.size = 50;
+    blockChain.size = size; //Change to desired blockchain size
     blockChain.first = &block1;
     block1.blockNumber = 0;
     strncpy(block1.ID, randomHexInt(), 26);
@@ -133,12 +135,17 @@ struct BlockChain generateBlockChain(){
         block.prev = cur;
         cur = &block;
     }
+    clock_t difference = clock() - startTime;
+    msec = difference * 1000 / CLOCKS_PER_SEC;
+    printf("Block Count %d: Time taken %d seconds %d milliseconds\n", size, msec/1000, msec%1000);
+    int64_t realtime = size * 10;
+    printf("Block Count %d with average bitcoin validation time(10 mins): Time taken %d days %d hours %d minutes\n", size, realtime/1440, realtime%1440/60, realtime%60);
     return blockChain;
 }
 
 int main() {
     int user_input;
-    struct BlockChain blockChain = generateBlockChain();
+    
     while(1)
     {
         printf("1: Overflow demo\n2: Fix Demo\n3: Exit\n");
@@ -151,7 +158,10 @@ int main() {
         else if (user_input == 2)
         {
             printf("Fix demo\n");
-            randomHexInt();
+            generateBlockChain(53);
+            generateBlockChain(10000);
+            generateBlockChain(100000);
+            //generateBlockChain(838319); //current bitcoin blockchain size
         }
         else if (user_input == 3)
         {
