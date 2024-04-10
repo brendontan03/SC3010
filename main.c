@@ -199,7 +199,7 @@ int main() {
     
     while(1)
     {
-        printf("1: Overflow demo\n2: Fix Demo\n3: Exit\n");
+        printf("1: Overflow demo\n2: Fix Demo\n3: Time to rebuild blockchain\n4: Exit\n");
         scanf("%d", &user_input);
         if (user_input == 1)
         {
@@ -210,12 +210,18 @@ int main() {
         {
             printf("Fix demo\n");
             fix();
-            // generateBlockChain(53);
-            // generateBlockChain(10000);
-            // generateBlockChain(100000);
-            //generateBlockChain(838319); //current bitcoin blockchain size
         }
         else if (user_input == 3)
+        {
+            printf("Time to rebuild blockchain\n");
+            generateBlockChain(53);
+            generateBlockChain(10000);
+            generateBlockChain(100000);
+            //generateBlockChain(838319); //current bitcoin blockchain size
+            int64_t realtime = 838319 * 10;
+            printf("Block Count %d with average bitcoin validation time(10 mins): Time taken %d days %d hours %d minutes\n", 838319, realtime/1440, realtime%1440/60, realtime%60);
+        }
+        else if (user_input == 4)
         {
             printf("Exiting\n");
             break;
