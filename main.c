@@ -34,25 +34,25 @@ struct BlockChain {
 };
 
 int overFlowDemo(){
-    int64_t x1 = INT64_MAX; // First Transaction Request 
-    int64_t x2 = INT64_MAX;  // Second Transaction Request
+    int64_t x1 = INT64_MAX; // First Transaction Request (2^63-1)
+    int64_t x2 = INT64_MAX;  // Second Transaction Request (2^63-1)
     int64_t wallet1 = 0; 
     int64_t wallet2 = 0;
     int64_t UTXO = 50; // Unspent bitcoins from the previous transactions
-    int64_t balance = 100; // Bitcoins left in account
-    int64_t final_value = UTXO + balance - (x1 + x2); // Total amount to be transferred
-    if (final_value >= 0) // Check if account has enough balance to complete the transactions
+    int64_t balance = 100; // Bitcoins left in sender account
+    int64_t total_balance = UTXO + balance; // Total bitcoins sender account has
+    int64_t final_value = total_balance - (x1 + x2);
+    if (final_value >= 0) // Check if sender account has enough balance to complete the transactions
     {
-        printf("bitcoin allocated to wallet 1: %"PRId64"\n", x1);
-        printf("bitcoin allocated to wallet 2: %"PRId64"\n", x2);
-        printf("bitcoin originally in UTXO: %"PRId64"\n", UTXO);
-        printf("bitcoin in UTXO: %"PRId64"\n", final_value);
+        printf("Bitcoins in sender's account: %"PRId64"\n", total_balance);
+        printf("Bitcoins allocated to wallet 1: %"PRId64"\n", x1);
+        printf("Bitcoins allocated to wallet 2: %"PRId64"\n", x2);
         wallet1 = wallet1 + x1;
         wallet2 = wallet2 + x2;
     }
     else
-        printf("%d Error, bitcoin not allocated", final_value);
-
+        printf("%d Error, Bitcoins not allocated", final_value);
+    printf("--------------------------------------\n");
     return 0;
 }
 
